@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Retail Report 2023</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #faf9f7;
+    color: #1a1a1a;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    padding: 48px 24px;
+  }
+
+  .page { max-width: 680px; margin: 0 auto; }
+
+  /* HEADER */
+  .header { margin-bottom: 52px; }
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #b0a898;
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #1a1a1a;
+    letter-spacing: -0.5px;
+  }
+  .header-line {
+    width: 40px;
+    height: 2px;
+    background: #c9a96e;
+    margin-top: 18px;
+  }
+
+  /* KPI ROW */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: #e8e4de;
+    border: 1px solid #e8e4de;
+    border-radius: 2px;
+    margin-bottom: 48px;
+    overflow: hidden;
+  }
+  .kpi {
+    background: #faf9f7;
+    padding: 24px 20px;
+    text-align: center;
+    animation: fadeUp 0.6s ease both;
+  }
+  .kpi:nth-child(2) { animation-delay: 0.1s; }
+  .kpi:nth-child(3) { animation-delay: 0.2s; }
+  .kpi-label {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #b0a898;
+    margin-bottom: 8px;
+  }
+  .kpi-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: #1a1a1a;
+    line-height: 1;
+  }
+  .kpi-sub { font-size: 11px; color: #c9a96e; margin-top: 5px; }
+
+  /* SECTION */
+  .section { margin-bottom: 48px; animation: fadeUp 0.7s ease both; }
+  .section:nth-child(3) { animation-delay: 0.15s; }
+  .section:nth-child(4) { animation-delay: 0.25s; }
+  .section:nth-child(5) { animation-delay: 0.35s; }
+  .section-title {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #b0a898;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e8e4de;
+  }
+
+  /* CHART WRAPPER */
+  .chart-box {
+    background: #fff;
+    border: 1px solid #e8e4de;
+    border-radius: 2px;
+    padding: 28px 24px 20px;
+  }
+  .chart-note { font-size: 11px; color: #b0a898; margin-top: 12px; }
+
+  /* CATEGORY BARS (custom) */
+  .cat-list { display: flex; flex-direction: column; gap: 14px; }
+  .cat-item {}
+  .cat-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .cat-name { font-size: 13px; color: #1a1a1a; }
+  .cat-rev { font-family: 'Playfair Display', serif; font-size: 14px; color: #1a1a1a; }
+  .cat-track { height: 3px; background: #f0ede8; border-radius: 2px; }
+  .cat-fill { height: 3px; border-radius: 2px; transition: width 1s cubic-bezier(.4,0,.2,1); }
+
+  /* INSIGHTS */
+  .insight-list { display: flex; flex-direction: column; gap: 16px; }
+  .insight {
+    display: flex;
+    gap: 16px;
+    padding: 18px;
+    background: #fff;
+    border: 1px solid #e8e4de;
+    border-radius: 2px;
+    border-left: 2px solid #c9a96e;
+  }
+  .insight-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: #e8e4de;
+    flex-shrink: 0;
+    line-height: 1;
+    padding-top: 2px;
+  }
+  .insight-text { font-size: 13px; color: #4a4a4a; line-height: 1.65; }
+  .insight-text strong { color: #1a1a1a; font-weight: 400; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="eyebrow">Retail Analytics · FY 2023</div>
+    <h1>Sales<br>Report</h1>
+    <div class="header-line"></div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-label">Revenue</div>
+      <div class="kpi-value">$795K</div>
+      <div class="kpi-sub">total 2023</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Profit</div>
+      <div class="kpi-value">$211K</div>
+      <div class="kpi-sub">26.6% margin</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Orders</div>
+      <div class="kpi-value">500</div>
+      <div class="kpi-sub">$1,591 avg</div>
+    </div>
+  </div>
+
+  <!-- MONTHLY CHART -->
+  <div class="section">
+    <div class="section-title">Monthly Revenue</div>
+    <div class="chart-box">
+      <canvas id="monthChart" height="160"></canvas>
+      <div class="chart-note">↑ Holiday spike in Nov–Dec accounts for 26% of annual revenue</div>
+    </div>
+  </div>
+
+  <!-- CATEGORY BREAKDOWN -->
+  <div class="section">
+    <div class="section-title">Revenue by Category</div>
+    <div class="chart-box">
+      <div class="cat-list" id="catList"></div>
+    </div>
+  </div>
+
+  <!-- DONUT -->
+  <div class="section">
+    <div class="section-title">Regional Split</div>
+    <div class="chart-box" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center">
+      <canvas id="regionChart" height="180"></canvas>
+      <div id="regionLegend" style="display:flex;flex-direction:column;gap:10px"></div>
+    </div>
+  </div>
+
+  <!-- INSIGHTS -->
+  <div class="section">
+    <div class="section-title">Key Findings</div>
+    <div class="insight-list">
+      <div class="insight">
+        <div class="insight-num">01</div>
+        <div class="insight-text"><strong>Electronics dominates</strong> with $432K revenue (54%) but only 18% margin — the volume leader.</div>
+      </div>
+      <div class="insight">
+        <div class="insight-num">02</div>
+        <div class="insight-text"><strong>Clothing earns the most per dollar</strong> — 45% margin, nearly 2.5× Electronics. High-value growth target.</div>
+      </div>
+      <div class="insight">
+        <div class="insight-num">03</div>
+        <div class="insight-text"><strong>South region lags</strong> at $127K vs West's $183K. A ~$56K untapped opportunity.</div>
+      </div>
+      <div class="insight">
+        <div class="insight-num">04</div>
+        <div class="insight-text"><strong>Headphones alone</strong> generated $101K — more than the entire Grocery category.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+Chart.defaults.color = '#b0a898';
+Chart.defaults.font.family = "'Lato', sans-serif";
+Chart.defaults.font.size = 11;
+
+// Monthly
+const months = ['J','F','M','A','M','J','J','A','S','O','N','D'];
+const rev = [62509,73141,61206,50435,87231,46173,49169,51231,56466,50221,101273,106346];
+
+new Chart(document.getElementById('monthChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [{
+      data: rev,
+      backgroundColor: rev.map(v => v > 80000 ? '#c9a96e' : '#e8e4de'),
+      borderRadius: 2,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    plugins: { legend: { display:false }, tooltip: {
+      backgroundColor: '#fff', borderColor: '#e8e4de', borderWidth:1,
+      titleColor:'#1a1a1a', bodyColor:'#4a4a4a',
+      callbacks: { label: c => ' $'+c.parsed.y.toLocaleString() }
+    }},
+    scales: {
+      x: { grid:{display:false}, border:{display:false} },
+      y: { grid:{color:'#f0ede8'}, border:{display:false}, ticks:{callback:v=>'$'+v/1000+'K'} }
+    }
+  }
+});
+
+// Category bars
+const cats = [
+  { name:'Electronics', rev:432602, color:'#c9a96e' },
+  { name:'Home & Garden', rev:127557, color:'#b8c9a9' },
+  { name:'Sports', rev:117330, color:'#a9b8c9' },
+  { name:'Clothing', rev:79082, color:'#c9a9b8' },
+  { name:'Grocery', rev:38834, color:'#c9c4a9' },
+];
+const maxRev = 432602;
+const list = document.getElementById('catList');
+cats.forEach(c => {
+  const pct = Math.round(c.rev/maxRev*100);
+  list.innerHTML += `
+    <div class="cat-item">
+      <div class="cat-head">
+        <span class="cat-name">${c.name}</span>
+        <span class="cat-rev">$${Math.round(c.rev/1000)}K</span>
+      </div>
+      <div class="cat-track">
+        <div class="cat-fill" style="width:${pct}%;background:${c.color}"></div>
+      </div>
+    </div>`;
+});
+
+// Region donut
+const regions = ['West','North','East','Central','South'];
+const regRevs = [183266,172506,157324,155314,126994];
+const regColors = ['#c9a96e','#b8c9a9','#a9b8c9','#c9a9b8','#c9c4a9'];
+
+new Chart(document.getElementById('regionChart'), {
+  type: 'doughnut',
+  data: {
+    labels: regions,
+    datasets: [{
+      data: regRevs,
+      backgroundColor: regColors,
+      borderWidth: 0,
+      hoverOffset: 4
+    }]
+  },
+  options: {
+    cutout: '72%',
+    plugins: {
+      legend: { display:false },
+      tooltip: {
+        backgroundColor:'#fff', borderColor:'#e8e4de', borderWidth:1,
+        titleColor:'#1a1a1a', bodyColor:'#4a4a4a',
+        callbacks: { label: c => ' $'+c.parsed.toLocaleString() }
+      }
+    }
+  }
+});
+
+const leg = document.getElementById('regionLegend');
+regions.forEach((r,i) => {
+  const pct = Math.round(regRevs[i]/795406*100);
+  leg.innerHTML += `
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:8px;height:8px;border-radius:50%;background:${regColors[i]};flex-shrink:0"></div>
+      <span style="font-size:12px;color:#4a4a4a;flex:1">${r}</span>
+      <span style="font-size:11px;color:#b0a898">${pct}%</span>
+    </div>`;
+});
+</script>
+</body>
+</html>
